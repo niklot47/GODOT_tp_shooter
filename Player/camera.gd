@@ -48,10 +48,9 @@ func _input(event: InputEvent) -> void:
 		
 	if event.is_action_pressed("swap_camera_alignment"):
 		swap_camera_alignment()
-		print_debug(current_camera_alignment)
 		
 	if event.is_action_pressed("aim"):
-		ente_aim()
+		enter_aim()
 		
 	if event.is_action_released("aim"):
 		exit_aim()		
@@ -86,51 +85,54 @@ func set_current_camera_aligment(alignment: CameraAliignment) -> void:
 	current_camera_alignment = alignment
 	
 func set_rear_spring_arm_position(pos: float, speed: float) -> void:
-	if camera_tween:
-		camera_tween.kill()
-		
-	camera_tween = get_tree().create_tween()
-	camera_tween.tween_property(edge_spring_arm, "spring_length", pos, speed)
-	
-func ente_aim() -> void:
-	if camera_tween:
-		camera_tween.kill()
-		
-	camera_tween = get_tree().create_tween().set_parallel()
-	camera_tween.set_trans(Tween.TRANS_EXPO)
-	camera_tween.set_ease(Tween.EASE_IN_OUT)
-	camera_tween.tween_property(camera, "fov", aim_fov, aim_speed)
-	camera_tween.tween_property(edge_spring_arm, "spring_length", aim_edge_spring_length * current_camera_alignment, aim_speed)
-	camera_tween.tween_property(rear_spring_arm, "spring_length", aim_rear_spring_length, aim_speed)
-	
-func exit_aim() -> void:
-	if camera_tween:
-		camera_tween.kill()
-		
-	camera_tween = get_tree().create_tween().set_parallel()
-	camera_tween.set_trans(Tween.TRANS_EXPO)
-	camera_tween.set_ease(Tween.EASE_IN_OUT)
-	camera_tween.tween_property(camera, "fov", defalt_fov, aim_speed)
-	camera_tween.tween_property(edge_spring_arm, "spring_length", defalt_edge_spring_arm_length * current_camera_alignment, aim_speed)
-	camera_tween.tween_property(rear_spring_arm, "spring_length", defalt_rear_spring_arm_length, aim_speed)
-	
-func enter_sprint() -> void:
-	if camera_tween:
-		camera_tween.kill()
-	camera_tween = get_tree().create_tween().set_parallel()
-	camera_tween.set_trans(Tween.TRANS_EXPO)
-	camera_tween.set_ease(Tween.EASE_IN_OUT)
-	camera_tween.tween_property(camera, "fov", sprint_fov, sprint_camera_speed)
-	camera_tween.tween_property(edge_spring_arm, "spring_length", defalt_edge_spring_arm_length * current_camera_alignment, sprint_camera_speed)
-	camera_tween.tween_property(rear_spring_arm, "spring_length", defalt_rear_spring_arm_length, sprint_camera_speed)
+	set_camera_tween([
+		{ "node": edge_spring_arm, "property": "spring_length", "value": pos, "duration": speed }
+	], false, false)
 
-	
+func enter_aim() -> void:
+	set_camera_tween([
+		{ "node": camera, "property": "fov", "value": aim_fov, "duration": aim_speed },
+		{ "node": edge_spring_arm, "property": "spring_length", "value": aim_edge_spring_length * current_camera_alignment, "duration": aim_speed },
+		{ "node": rear_spring_arm, "property": "spring_length", "value": aim_rear_spring_length, "duration": aim_speed }
+	])
+
+func exit_aim() -> void:
+	set_camera_tween([
+		{ "node": camera, "property": "fov", "value": defalt_fov, "duration": aim_speed },
+		{ "node": edge_spring_arm, "property": "spring_length", "value": defalt_edge_spring_arm_length * current_camera_alignment, "duration": aim_speed },
+		{ "node": rear_spring_arm, "property": "spring_length", "value": defalt_rear_spring_arm_length, "duration": aim_speed }
+	])
+
+func enter_sprint() -> void:
+	set_camera_tween([
+		{ "node": camera, "property": "fov", "value": sprint_fov, "duration": sprint_camera_speed },
+		{ "node": edge_spring_arm, "property": "spring_length", "value": defalt_edge_spring_arm_length * current_camera_alignment, "duration": sprint_camera_speed },
+		{ "node": rear_spring_arm, "property": "spring_length", "value": defalt_rear_spring_arm_length, "duration": sprint_camera_speed }
+	])
+
 func exit_sprint() -> void:
+	set_camera_tween([
+		{ "node": camera, "property": "fov", "value": defalt_fov, "duration": sprint_camera_speed },
+		{ "node": edge_spring_arm, "property": "spring_length", "value": defalt_edge_spring_arm_length * current_camera_alignment, "duration": aim_speed },
+		{ "node": rear_spring_arm, "property": "spring_length", "value": defalt_rear_spring_arm_length, "duration": aim_speed }
+	])
+	
+func set_camera_tween(tween_targets: Array = [], paralel: bool = true, do_ease: bool = true, ease_type: Tween.EaseType = Tween.EASE_IN_OUT)-> void:
 	if camera_tween:
 		camera_tween.kill()
-	camera_tween = get_tree().create_tween().set_parallel()
-	camera_tween.set_trans(Tween.TRANS_EXPO)
-	camera_tween.set_ease(Tween.EASE_IN_OUT)
-	camera_tween.tween_property(camera, "fov", defalt_fov, sprint_camera_speed)
-	camera_tween.tween_property(edge_spring_arm, "spring_length", defalt_edge_spring_arm_length * current_camera_alignment, aim_speed)
-	camera_tween.tween_property(rear_spring_arm, "spring_length", defalt_rear_spring_arm_length, aim_speed)
+	
+	camera_tween = get_tree().create_tween()
+	if paralel:
+		camera_tween.set_parallel()
+	
+	if do_ease:
+		camera_tween.set_trans(Tween.TRANS_EXPO)
+		camera_tween.set_ease(ease_type)
+	
+	for tween in tween_targets:
+		camera_tween.tween_property(
+			tween.node,
+			tween.property,
+			tween.value,
+			tween.duration
+		)
