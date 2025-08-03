@@ -48,18 +48,6 @@ func _input(event: InputEvent) -> void:
 		
 	if event.is_action_pressed("swap_camera_alignment"):
 		swap_camera_alignment()
-		
-	if event.is_action_pressed("aim"):
-		enter_aim()
-		
-	if event.is_action_released("aim"):
-		exit_aim()		
-		
-	if event.is_action_pressed("sprint"):
-		enter_sprint()
-		
-	if event.is_action_released("sprint"):
-		exit_sprint()
 	
 func camera_look(mouse_movement: Vector2) -> void:
 	camera_rotation += mouse_movement
@@ -136,3 +124,15 @@ func set_camera_tween(tween_targets: Array = [], paralel: bool = true, do_ease: 
 			tween.value,
 			tween.duration
 		)
+
+func _on_sprint_sprint_started() -> void:
+	enter_sprint()
+
+func _on_sprint_ended() -> void:
+	exit_sprint()
+
+func _on_aim_entered() -> void:
+	enter_aim()
+
+func _on_aim_exited() -> void:
+	exit_aim()

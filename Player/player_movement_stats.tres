@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="MovementStats" load_steps=2 format=3 uid="uid://dhpy2ekh55la2"]
+
+[ext_resource type="Script" uid="uid://cwwvvv4vxj3cl" path="res://Player/movement_stats.gd" id="1_cf0m7"]
+
+[resource]
+script = ExtResource("1_cf0m7")
+time_to_jump_apex = 0.5
+time_to_land = 0.5
+jump_height = 1.0
+jump_distance = 4.0
+sprint_duration = 3.0
+sprint_jump_distance = 7.0
+sprint_minimum_threshhold = 0.5
+aim_jump_distance = 1.0
+acceleraion = 100.0
+in_air_acceleration = 5.0
+metadata/_custom_type_script = "uid://cwwvvv4vxj3cl"

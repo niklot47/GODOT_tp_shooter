@@ -4,10 +4,10 @@ class_name State
 @warning_ignore("unused_signal")
 signal finished(next_state: String)
 
-func _enter_tree() -> void:
+func _enter() -> void:
 	return
 	
-func _exit_tree() -> void:
+func _exit() -> void:
 	return
 	
 func _state_input(_event: InputEvent) -> void:
