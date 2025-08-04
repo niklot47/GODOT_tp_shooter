@@ -1,0 +1,33 @@
+Crouch Walk Strafe Left
+Crouch Walk Strafe Right
+Falling Idle
+Fast Run
+Grab And Put Back Rifle
+Great Sword Idle
+Idle
+Idle Aiming
+Idle.fbx
+Jump Loop
+mixamo animations.txt
+Pistol Idle
+Reloading
+Rifle Aiming Idle
+Rifle Run
+Run Backward Left
+Run Backward Right
+Run Backwards
+Run Forward Left
+Run Forward Right
+Run Forward
+Run Left
+Run Right
+Slow Run
+Sprint Forward
+T-Pose
+Walk Backward Left
+Walk Backward Right
+Walk Backward
+Walk Forward Left
+Walk Forward Right
+Walk With Rifle
+Walking
