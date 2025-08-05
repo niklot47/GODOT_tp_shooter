@@ -6,9 +6,7 @@ Grab And Put Back Rifle
 Great Sword Idle
 Idle
 Idle Aiming
-Idle.fbx
 Jump Loop
-mixamo animations.txt
 Pistol Idle
 Reloading
 Rifle Aiming Idle
